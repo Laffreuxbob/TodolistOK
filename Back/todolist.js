@@ -30,14 +30,37 @@ const todos = [
     }
 ]
 
+//const todos = [];
+
+
+
+// -> 127.0.0.1:8080/version
+server.get('/version', (req, res) => {
+    if (!pkg || !pkg.version) {
+        console.log('Error: No package.json');
+        res.status(404);
+        return res.send();
+    }
+    res.status(200);
+    console.log('version: ' + pkg.version);
+    res.send({ version: pkg.version });
+})
+
 // Methode get pour recuperer la totalite de la liste de taches
 server.get('/todos', (req, res) => {
-    res.statusCode = 200;
-    console.log('Liste de taches :')
-    console.log(todos);
-    console.log('------------------------')
-    res.send(todos);
+    if (!todos) {
+        res.status(200)
+        console.log("Liste inexstante");
+        return res.send({})
+    }
     
+    res.status(200)
+
+    console.log('Liste de taches :')
+    console.log(todos || "Liste de taches vide");
+    console.log('------------------------')
+
+    res.send(todos || {})
 });
 
 // Methode get pour recuperer un element par recherche de mot cle
@@ -51,7 +74,7 @@ server.get('/todos/:name', (req, res) => {
     })
     res.statusCode = 200;
     console.log('Resultat de la cherche avec le mot : ' + todoToSearch)
-    console.log(todoToDisplay);
+    console.log(todoToDisplay || 'Aucun resultat pour cette recherche');
     console.log('------------------------')
     res.send(todoToDisplay);
 })
