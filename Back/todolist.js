@@ -4,7 +4,12 @@ const express = require('express');
 const pkg = require('./package.json');
 const conf = require('./config.js');
 
+const bodyPost = require('body-parser');
+
 const server = express();
+
+server.use(bodyPost.json()); // support json encoded bodies
+server.use(bodyPost.urlencoded({ extended: true })); // support encoded bodies
 
 // Liste fictive de taches : bdd mongo pour plus tard
 const todos = [
@@ -28,7 +33,9 @@ const todos = [
 // Methode get pour recuperer la totalite de la liste de taches
 server.get('/todos', (req, res) => {
     res.statusCode = 200;
+    console.log('Liste de taches :')
     console.log(todos);
+    console.log('------------------------')
     res.send(todos);
     
 });
@@ -43,12 +50,23 @@ server.get('/todos/:name', (req, res) => {
         }
     })
     res.statusCode = 200;
+    console.log('Resultat de la cherche avec le mot : ' + todoToSearch)
     console.log(todoToDisplay);
+    console.log('------------------------')
     res.send(todoToDisplay);
 })
 
 server.post('/todos/add', (req, res) => {
-    console.log(req.body)
+    let newName = "name";
+    let newDate = "date";
+    let newDescription = "description";
+    let newItem = {
+        "name":newName,
+        "date":newDate,
+        "description":newDescription
+    }
+    todos.push(newItem);
+    res.send(newName + ' ' + newDate + ' ' + newDescription);
     res.end();
 })
 
