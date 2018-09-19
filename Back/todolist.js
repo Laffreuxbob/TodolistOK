@@ -3,6 +3,7 @@
 const express = require('express');
 const pkg = require('./package.json');
 const conf = require('./config.js');
+const moment = require('moment');
 
 const bodyPost = require('body-parser');
 
@@ -16,16 +17,19 @@ const todos = [
     {
         name: "Linux",
         date: "2018-09-18",
+        ajout: "2018-09-12",
         description: "Installer Linux"
     },
     {
         name: "Test",
         date: "2018-09-18",
+        ajout: "2018-09-12",
         description: "Realiser les tests de qualif"
     },
     {
         name: "Todolist",
         date: "2018-09-18",
+        ajout: "2018-09-12",
         description: "Implementer une todolist en nodeJS"
     }
 ]
@@ -60,7 +64,9 @@ server.get('/todos', (req, res) => {
     console.log(todos || "Liste de taches vide");
     console.log('------------------------')
 
-    res.send(todos || {})
+    //res.send(todos || {})
+    res.write("Taille : " + todos.length + '\n')
+    res.end();
 });
 
 // Methode get pour recuperer un element par recherche de mot cle
@@ -79,21 +85,28 @@ server.get('/todos/:name', (req, res) => {
     res.send(todoToDisplay);
 })
 
-server.post('/todos/add', (req, res) => {
-    //const body = req.body;
-    //console.log(body);
+// Methode POST pour ajouter un nouvel element a la liste en cours
+// curl http://127.0.0.1:8080/todos/add -X POST -d name='NAME' -d date='DATE' -d description='DES'
+// Envoi en JSON c'est mieux :curl -d '{"name":"NAMEJSON", "date":"DATEJSOn", "description":"DESJSON"}' -H "Content-Type: application/json" -X POST http://localhost:8080/todos/add
+ server.post('/todos/add', (req, res) => {
+   
+    const data = req.body;
 
-    let newName = "Nn";
-    let newDate = "Dd";
-    let newDescription = "DESdes";
+    let newName = data.name;
+    let newDate = data.date;
+    let newDescription = data.description;
+
     let newItem = {
         "name":newName,
         "date":newDate,
+        "ajout": moment().format('DD-MM-YYYY'),
         "description":newDescription
     }
     todos.push(newItem);
-    console.log(newItem);
-    res.send(newName + ' ' + newDate + ' ' + newDescription);
+    
+    
+    res.write("Nouvelle entree enregistree : \n")
+    res.write(JSON.stringify(newItem) + '\n')
     res.end();
 })
 
@@ -103,5 +116,6 @@ server.listen(conf.port, conf.hostname, (err) => {
     if(err){
         return console.log("Error:", err)
     }
-    console.log('Server running at http://' + conf.hostname + ':' + conf.port + '/');  
+    console.log('Server running at http://' + conf.hostname + ':' + conf.port + '/'); 
+    console.log('today : ' + moment().format('DD-MM-YYYY')) 
 })
