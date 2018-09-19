@@ -9,7 +9,7 @@ const bodyPost = require('body-parser');
 const server = express();
 
 server.use(bodyPost.json()); // support json encoded bodies
-server.use(bodyPost.urlencoded({ extended: true })); // support encoded bodies
+server.use(bodyPost.urlencoded({ extended: false })); // support encoded bodies
 
 // Liste fictive de taches : bdd mongo pour plus tard
 const todos = [
@@ -80,15 +80,19 @@ server.get('/todos/:name', (req, res) => {
 })
 
 server.post('/todos/add', (req, res) => {
-    let newName = "name";
-    let newDate = "date";
-    let newDescription = "description";
+    //const body = req.body;
+    //console.log(body);
+
+    let newName = "Nn";
+    let newDate = "Dd";
+    let newDescription = "DESdes";
     let newItem = {
         "name":newName,
         "date":newDate,
         "description":newDescription
     }
     todos.push(newItem);
+    console.log(newItem);
     res.send(newName + ' ' + newDate + ' ' + newDescription);
     res.end();
 })
