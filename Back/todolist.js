@@ -47,8 +47,7 @@ server.get('/version', (req, res) => {
     }
     res.status(200);
     console.log('version: ' + pkg.version);
-    res.send({ version: pkg.version });
-    res.end('\n');
+    res.send('version : ' +  pkg.version + '\n').end()
 })
 
 // Methode get pour recuperer la totalite de la liste de taches
@@ -64,9 +63,8 @@ server.get('/todos', (req, res) => {
     console.log('Liste de taches :')
     console.log(todos || "Liste de taches vide");
     console.log('------------------------')
-
     //res.send(todos || {})
-    res.send("Taille : " + todos.length + '\n')
+    res.send("Taille : " + todos.length + '\n').end();
 });
 
 // Methode get pour recuperer un element par recherche de mot cle
@@ -82,28 +80,33 @@ server.get('/todos/:name', (req, res) => {
     console.log('Resultat de la cherche avec le mot : ' + todoToSearch)
     console.log(todoToDisplay || 'Aucun resultat pour cette recherche');
     console.log('------------------------')
-    res.send(todoToDisplay);
+    res.send(JSON.stringify(todoToDisplay) + '\n').end();
 })
 
 // Methode POST pour ajouter un nouvel element a la liste en cours
 // curl http://127.0.0.1:8080/todos/add -X POST -d name='NAME' -d date='DATE' -d description='DES'
-// Envoi en JSON c'est mieux :curl -d '{"name":"NAMEJSON", "date":"DATEJSOn", "description":"DESJSON"}' -H "Content-Type: application/json" -X POST http://localhost:8080/todos/add
+// Envoi en JSON c'est mieux :curl -d '{"name":"NouvelleTache", "date":"1995-07-24", "description":"Ajout d'une nouvelle tache"}' -H "Content-Type: application/json" -X POST http://localhost:8080/todos/add
 server.post('/todos/add', (req, res) => {
    
-    const data = req.body;
+    const data = req.body; // recuperation des donnees dans le body de la requete
 
+    /* attribution des nouvelles key_value*/ 
     let newName = data.name;
     let newDate = data.date;
     let newDescription = data.description;
 
+    /* creation du nouvel objet tache */
     let newItem = {
         "name":newName,
         "date":newDate,
         "ajout": moment().format('DD-MM-YYYY'),
         "description":newDescription
     }
+    /* ajout a la liste */
     todos.push(newItem);
     
+    res.status(200);
+
     res.write("Nouvelle entree enregistree : \n")
     res.write(JSON.stringify(newItem) + '\n')
     res.end();
@@ -115,32 +118,14 @@ server.delete('/delete/:todoToDelete', (req, res) => {
     const todoToDelete = req.params.todoToDelete
     todos.forEach( item => {
         if(item.name === todoToDelete){
-            console.log(item.name);
+            console.log("Suppresion du projet :" + item.name);
             let index = todos.indexOf(item);
             todos.splice(index,1);
         }
     })
-    res.status(200);
+    res.status(410); //status de suppression de data du serveur
     res.end();
 })
-
-
-
-
-
-
-// server.delete('/todos/delete/truc', (req, res) => {
-//     const todoToDelete = req.params.name;
-//     todos.forEach( item => {
-//         if(item.name === todoToDelete){
-//             let index = todos.indexOf(item);
-//             array.splice(index, 1)
-//         }
-//     })
-//     res.statusCode = 410;
-//     res.end();
-// })
-
 
 // Le serveur tourne suivant la configuration definie dans config.js
 server.listen(conf.port, conf.hostname, (err) => {
