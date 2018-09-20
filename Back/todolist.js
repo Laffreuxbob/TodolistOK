@@ -143,7 +143,6 @@ server.get('/todosInfos/:name', (req, res) => {
     let dateEnd = moment(todoToGet.date,"DD-MM-YYYY" )
     let dateStart = moment(todoToGet.ajout,"DD-MM-YYYY" )
 
-    let time = todoToGet.date.diff(todoToGet.ajout, "days")
     let timeAll = dateEnd.diff(dateStart) / (1000 * 60 * 60 * 24);
     let timeLeft = Math.trunc(dateEnd.diff(moment()) / (1000 * 60 * 60 * 24));
 
