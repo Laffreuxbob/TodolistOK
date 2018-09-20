@@ -127,6 +127,36 @@ server.delete('/delete/:todoToDelete', (req, res) => {
     res.end();
 })
 
+// Methode qui renvoie des informations temporelles liees a la tache (delai etc...)
+// curl http://127.0.0.1:8080/todosInfos/name
+server.get('/todosInfos/:name', (req, res) => {
+    const todoToSearch = req.params.name; /* on recupere les mot cle de recherche*/ 
+    let todoToGet = null; /* on prepare un objet vide pour recuperer une tache si elle existe */
+    todos.forEach( item => {
+        if(item.name === todoToSearch){
+            todoToGet = item;
+            console.log("to get : " + JSON.stringify(item))
+        }
+    })
+    res.status(200);
+    
+    let dateEnd = moment(todoToGet.date,"DD-MM-YYYY" )
+    let dateStart = moment(todoToGet.ajout,"DD-MM-YYYY" )
+
+    let time = todoToGet.date.diff(todoToGet.ajout, "days")
+    let timeAll = dateEnd.diff(dateStart) / (1000 * 60 * 60 * 24);
+    let timeLeft = Math.trunc(dateEnd.diff(moment()) / (1000 * 60 * 60 * 24));
+
+    console.log('Delai restant pour la tache ' + todoToSearch + " : " + "time")
+    console.log('------------------------')
+    console.log('Delai total pour la tache ' + todoToSearch + " : " + timeAll + "jour(s)")
+    console.log('Delai restant pour la tache ' + todoToSearch + " : " + timeLeft + "jour(s)")
+    console.log('------------------------' + '\n')
+    //res.send(JSON.stringify(todoToDisplay) + '\n').end();
+    res.end();
+})
+
+
 // Le serveur tourne suivant la configuration definie dans config.js
 server.listen(conf.port, conf.hostname, (err) => {
     if(err){
