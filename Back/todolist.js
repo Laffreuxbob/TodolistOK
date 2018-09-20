@@ -1,9 +1,9 @@
 'use strict'
 
-const express = require('express');
+const express = require('express'); // Framework gestion serveur nodeJS
 const pkg = require('./package.json');
 const conf = require('./config.js');
-const moment = require('moment');
+const moment = require('moment'); // Librairie gestion de dates
 
 const bodyPost = require('body-parser');
 
