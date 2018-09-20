@@ -1,11 +1,11 @@
 'use strict'
 
 const express = require('express'); // Framework gestion serveur nodeJS
-const pkg = require('./package.json');
-const conf = require('./config.js');
+const pkg = require('./package.json'); // Pour pouvoir lire les data Json
+const conf = require('./config.js'); // IP et port de notre serveur
 const moment = require('moment'); // Librairie gestion de dates
 
-const bodyPost = require('body-parser');
+const bodyPost = require('body-parser'); // Necessaire a la lecture des data dans le body de la requete (post)
 
 const server = express();
 
@@ -41,13 +41,16 @@ const todos = [
         date: "18-09-2018",
         ajout: "16-09-2018",
         description: "Implementer une todolist en nodeJS"
+    },
+    {
+        name: "Alternance",
+        date: "11-09-2020",
+        ajout: "12-09-2018",
+        description: "Apprendre plein de trucs trop bien"
     }
 ]
 
-//const todos = [];
-
-
-
+// Methode GET pour recuperer la version du projet
 // curl http://127.0.0.1:8080/version
 server.get('/version', (req, res) => {
     if (!pkg || !pkg.version) {
@@ -60,7 +63,8 @@ server.get('/version', (req, res) => {
     res.send('version : ' +  pkg.version + '\n').end()
 })
 
-// Methode get pour recuperer la totalite de la liste de taches
+// Methode GET pour recuperer la totalite de la liste de taches
+// curl http://127.0.0.1:8080/todos
 server.get('/todos', (req, res) => {
     if (!todos) {
         res.status(200);
@@ -77,7 +81,8 @@ server.get('/todos', (req, res) => {
     res.send("Taille : " + todos.length + '\n').end();
 });
 
-// Methode get pour recuperer un element par recherche de mot cle
+// Methode GET pour recuperer un element par recherche de mot cle
+// curl http://127.0.0.1:8080/todos/Linux
 server.get('/todos/:name', (req, res) => {
     const todoToSearch = req.params.name; /* on recupere les mot cle de recherche*/ 
     let todoToDisplay = null; /* on prepare un objet vide pour recuperer une tache si elle existe */
@@ -94,25 +99,24 @@ server.get('/todos/:name', (req, res) => {
 })
 
 // Methode POST pour ajouter un nouvel element a la liste en cours
-// curl http://127.0.0.1:8080/todos/add -X POST -d name='NAME' -d date='DATE' -d description='DES'
-//curl -d '{"name":"NouveauProjet", "date":"25-09-2019", "description":"Projet test delai"}' -H "Content-Type: application/json" -X POST http://localhost:8080/todos/add
+// curl -X POST -H "Content-Type: application/json" -d '{"name":"NouveauProjet", "date":"25-09-2019", "description":"Projet test delai"}' http://localhost:8080/todos/add
 server.post('/todos/add', (req, res) => {
    
     const data = req.body; // recuperation des donnees dans le body de la requete
 
-    /* attribution des nouvelles key_value*/ 
+    // attribution des nouvelles key_value  
     let newName = data.name;
     let newDate = data.date;
     let newDescription = data.description;
 
-    /* creation du nouvel objet tache */
+    // creation du nouvel objet tache 
     let newItem = {
         "name":newName,
         "date":newDate,
         "ajout": moment().format('DD-MM-YYYY'),
         "description":newDescription
     }
-    /* ajout a la liste */
+    // ajout a la liste 
     todos.push(newItem);
     
     res.status(200);
@@ -122,8 +126,8 @@ server.post('/todos/add', (req, res) => {
     res.end();
 })
 
-// Methode delete pour supprimer un element de la liste avec un mot cle
-// curl -X DELETE  http://127.0.0.1:8080/delete/name
+// Methode DELETE pour supprimer un element de la liste avec un mot cle
+// curl -X DELETE  http://127.0.0.1:8080/delete/Test
 server.delete('/delete/:todoToDelete', (req, res) => {
     const todoToDelete = req.params.todoToDelete
     todos.forEach( item => {
@@ -138,10 +142,12 @@ server.delete('/delete/:todoToDelete', (req, res) => {
 })
 
 // Methode qui renvoie des informations temporelles liees a la tache (delais etc...)
-// curl http://127.0.0.1:8080/todosInfos/name
+// curl http://127.0.0.1:8080/todosInfos/Alternance
 server.get('/todosInfos/:name', (req, res) => {
-    const todoToSearch = req.params.name; /* on recupere les mot cle de recherche*/ 
-    let todoToGet = null; /* on prepare un objet vide pour recuperer une tache si elle existe */
+    
+    const todoToSearch = req.params.name; // on recupere les mot cle de recherche
+    let todoToGet = null; // on prepare un objet vide pour recuperer une tache si elle existe 
+    
     todos.forEach( item => {
         if(item.name === todoToSearch){
             todoToGet = item;
@@ -158,11 +164,11 @@ server.get('/todosInfos/:name', (req, res) => {
     console.log('Delai total pour la tache ' + todoToSearch + " : " + timeAll + "jour(s)")
     console.log('Delai restant pour la tache ' + todoToSearch + " : " + timeLeft + "jour(s)")
     console.log('------------------------' + '\n')
-    //res.send(JSON.stringify(todoToDisplay) + '\n').end();
     res.end();
 })
 
 
+// Methode d'edition et de mise a jour d'une tache (on utilise le // pour garder la valeur actuelle)
 // curl -X PUT -H "Content-Type: application/json" -d '{"name":"editedName","date":"editedDate","description":"//"}' "http://localhost:8080/todos/edit/Linux"
 
 server.put('/todos/edit/:name', (req, res) => {
@@ -193,6 +199,7 @@ server.put('/todos/edit/:name', (req, res) => {
         "description":editedDescription
     }
 
+    // Edition de la nouvelle tache
     todos[index] = editedItem;
 
     // res.write(JSON.stringify("to edit : " + JSON.stringify(todoToEdit)) + '\n');
