@@ -12,6 +12,16 @@ const server = express();
 server.use(bodyPost.json()); // support json encoded bodies
 server.use(bodyPost.urlencoded({ extended: false })); // support encoded bodies
 
+
+// Facon presque propre d'eviter le probleme de header CORS
+const allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+}
+server.use(allowCrossDomain);
+
 // Liste fictive de taches : bdd mongo pour plus tard
 const todos = [
     {
