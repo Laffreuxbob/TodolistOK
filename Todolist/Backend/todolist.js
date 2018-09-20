@@ -12,7 +12,11 @@ const server = express();
 server.use(bodyPost.json()); // support json encoded bodies
 server.use(bodyPost.urlencoded({ extended: false })); // support encoded bodies
 
-
+server.use((req, res, next) => {
+    res.header('Content-Type', 'application/json')
+    next()
+})
+  
 // Facon presque propre d'eviter le probleme de header CORS
 const allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
@@ -50,6 +54,33 @@ const todos = [
     }
 ]
 
+// const todos = [
+//     {
+//         "name": "Linux",
+//         "date": "18-09-2018",
+//         "ajout": "12-09-2018",
+//         "description": "Installer Linux"
+//     },
+//     {
+//         "name": "Test",
+//         "date": "18-09-2018",
+//         "ajout": "13-09-2018",
+//         "description": "Realiser les tests de qualif"
+//     },
+//     {
+//         "name": "Todolist",
+//         "date": "18-09-2018",
+//         "ajout": "16-09-2018",
+//         "description": "Implementer une todolist en nodeJS"
+//     },
+//     {
+//         "name": "Alternance",
+//         "date": "11-09-2020",
+//         "ajout": "12-09-2018",
+//         "description": "Apprendre plein de trucs trop bien"
+//     }
+// ]
+
 // Methode GET pour recuperer la version du projet
 // curl http://127.0.0.1:8080/version
 server.get('/version', (req, res) => {
@@ -77,8 +108,9 @@ server.get('/todos', (req, res) => {
     console.log('Liste de taches :')
     console.log(todos || "Liste de taches vide");
     console.log('------------------------')
-    //res.send(todos || {})
-    res.send("Taille : " + todos.length + '\n').end();
+    //res.send(JSON.stringify({'toto': 'titi'}))
+    res.send(JSON.stringify(todos))
+    //res.send("Taille : " + todos.length + '\n').end();
 });
 
 // Methode GET pour recuperer un element par recherche de mot cle
