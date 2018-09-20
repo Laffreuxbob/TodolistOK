@@ -127,7 +127,7 @@ server.delete('/delete/:todoToDelete', (req, res) => {
     res.end();
 })
 
-// Methode qui renvoie des informations temporelles liees a la tache (delai etc...)
+// Methode qui renvoie des informations temporelles liees a la tache (delais etc...)
 // curl http://127.0.0.1:8080/todosInfos/name
 server.get('/todosInfos/:name', (req, res) => {
     const todoToSearch = req.params.name; /* on recupere les mot cle de recherche*/ 
