@@ -4,10 +4,11 @@ function display(){
     .then(response => {
         return response.json();
       })
-      .then(data => {
-        console.log(data);
+      .then(json => {
+        console.log(json);
+        return json;
       }).catch(err => {
-        console.log('Error occured with fetching ressources')
+        console.log('Error occured with fetching ressources : ' + err)
       });
 }
 
