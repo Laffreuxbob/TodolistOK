@@ -163,19 +163,43 @@ server.get('/todosInfos/:name', (req, res) => {
 })
 
 
-// curl -X PUT -H "Content-Type: application/json" -d '{"key1":"value"}' http://127.0.0.1:8080/todos/edit/Linux
-server.put('todos/edit/:name', (req, res) => {
+// curl -X PUT -H "Content-Type: application/json" -d '{"name":"editedName","date":"editedDate","description":"//"}' "http://localhost:8080/todos/edit/Linux"
 
-    console.log("test")
+server.put('/todos/edit/:name', (req, res) => {
 
+    let nameToEdit = req.params.name;
+    let todoToEdit = null;
+    let index = null;
 
-    // const todoToEdit = null;
-    // todos.forEach( item => {
-    //     if(item.name === todoToSearch){
-    //         todoToEdit = item;
-    //     }
-    //     console.log(todoToEdit);
-    // })
+    todos.forEach( item => {
+        if(item.name === nameToEdit){
+            todoToEdit = item;
+            index = todos.indexOf(item);
+        } 
+    })
+    
+    let datas = req.body;
+
+    /* attribution des nouvelles key_value editees */ 
+    let editedName = (datas.name === "//" ?  todoToEdit.name : datas.name);
+    let editedDate = (datas.date === "//" ?  todoToEdit.date : datas.date);
+    let editedDescription = (datas.description === "//" ? todoToEdit.description : datas.description);
+
+    /* creation du nouvel objet tache */
+    let editedItem = {
+        "name":editedName,
+        "date":editedDate,
+        "ajout": todoToEdit.ajout,
+        "description":editedDescription
+    }
+
+    todos[index] = editedItem;
+
+    // res.write(JSON.stringify("to edit : " + JSON.stringify(todoToEdit)) + '\n');
+    // res.write(JSON.stringify(" edited : " + JSON.stringify(editedItem)) + '\n');
+
+    res.status(200);
+    res.end();
 })
 
 // Le serveur tourne suivant la configuration definie dans config.js
