@@ -16,20 +16,20 @@ server.use(bodyPost.urlencoded({ extended: false })); // support encoded bodies
 const todos = [
     {
         name: "Linux",
-        date: "2018-09-18",
-        ajout: "2018-09-12",
+        date: "18-09-2018",
+        ajout: "12-09-2018",
         description: "Installer Linux"
     },
     {
         name: "Test",
-        date: "2018-09-18",
-        ajout: "2018-09-12",
+        date: "18-09-2018",
+        ajout: "13-09-2018",
         description: "Realiser les tests de qualif"
     },
     {
         name: "Todolist",
-        date: "2018-09-18",
-        ajout: "2018-09-12",
+        date: "18-09-2018",
+        ajout: "16-09-2018",
         description: "Implementer une todolist en nodeJS"
     }
 ]
@@ -38,7 +38,7 @@ const todos = [
 
 
 
-// -> 127.0.0.1:8080/version
+// curl http://127.0.0.1:8080/version
 server.get('/version', (req, res) => {
     if (!pkg || !pkg.version) {
         console.log('Error: No package.json');
@@ -85,7 +85,7 @@ server.get('/todos/:name', (req, res) => {
 
 // Methode POST pour ajouter un nouvel element a la liste en cours
 // curl http://127.0.0.1:8080/todos/add -X POST -d name='NAME' -d date='DATE' -d description='DES'
-// Envoi en JSON c'est mieux :curl -d '{"name":"NouvelleTache", "date":"1995-07-24", "description":"Ajout d'une nouvelle tache"}' -H "Content-Type: application/json" -X POST http://localhost:8080/todos/add
+//curl -d '{"name":"NouveauProjet", "date":"25-09-2019", "description":"Projet test delai"}' -H "Content-Type: application/json" -X POST http://localhost:8080/todos/add
 server.post('/todos/add', (req, res) => {
    
     const data = req.body; // recuperation des donnees dans le body de la requete
@@ -135,7 +135,6 @@ server.get('/todosInfos/:name', (req, res) => {
     todos.forEach( item => {
         if(item.name === todoToSearch){
             todoToGet = item;
-            console.log("to get : " + JSON.stringify(item))
         }
     })
     res.status(200);
@@ -146,15 +145,12 @@ server.get('/todosInfos/:name', (req, res) => {
     let timeAll = dateEnd.diff(dateStart) / (1000 * 60 * 60 * 24);
     let timeLeft = Math.trunc(dateEnd.diff(moment()) / (1000 * 60 * 60 * 24));
 
-    console.log('Delai restant pour la tache ' + todoToSearch + " : " + "time")
-    console.log('------------------------')
     console.log('Delai total pour la tache ' + todoToSearch + " : " + timeAll + "jour(s)")
     console.log('Delai restant pour la tache ' + todoToSearch + " : " + timeLeft + "jour(s)")
     console.log('------------------------' + '\n')
     //res.send(JSON.stringify(todoToDisplay) + '\n').end();
     res.end();
 })
-
 
 // Le serveur tourne suivant la configuration definie dans config.js
 server.listen(conf.port, conf.hostname, (err) => {
