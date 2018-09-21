@@ -1,14 +1,34 @@
+*{
+    box-sizing: border-box;
+    /*border: 1px solid red;*/
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+
 h1{
+    flex: 100%;
     color: red;
+    text-align: center
 }
 
-.testpop{
+
+#mainContent{
     border: 1px solid green;
+    flex: 50%;
 }
 
+li > button {
+    text-align: left;
+    float: right;
+    margin-right: 1rem;
+}
 .popup{
     text-decoration: none;
-    
+    width: 40rem;
     color: inherit;
     text-shadow: 0 -1px 0 black;
 }

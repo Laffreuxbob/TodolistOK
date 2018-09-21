@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Todos list</title>
-        <link rel="stylesheet" type="text/css" href="css/styleTodo.css">
-        <script src="js/scriptTodo.js"></script>
-    </head>
-    <body>
-        <h1>Todolist NodeJS</h1>
-        <div id="mainContent"></div>
-            <div>
-            <label for="name">Name :
-                <input type="text" name="name" id="name">
-            </label>
-            <label for="date">Date:
-                <input type="date" name="date" id="date">
-            </label>
-            <label for="description">Description:
-                <input type="text" name="description" id="description">
-            </label>
-        </div>
+<head>
+    <title>Todos list</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
+    <link rel="stylesheet" type="text/css" href="css/styleTodo.css">
+    
+    <script src="js/scriptTodo.js"></script>
+</head>
+<body>
+    <h1>Todolist NodeJS</h1>
+    <div id="todoListDisplay">
+    </div>
+
+
+    <div>
+        <label for="name">Name :
+            <input type="text" name="name" id="name">
+        </label>
+        <label for="date">Date:
+            <input type="date" name="date" id="date">
+        </label>
+        <label for="description">Description:
+            <input type="text" name="description" id="description">
+        </label>
         <button onclick=addTodo()>Add</button>
-        
-    </body>
+    </div>
+    
+</body>
 </html>
