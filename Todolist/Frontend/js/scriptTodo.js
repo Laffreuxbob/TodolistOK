@@ -135,7 +135,7 @@ function deleteTodo(){
 function editTodo(){
   console.log(this.id)
   let editName = document.getElementById("name").value;
-  let editDate = document.getElementById("date").value;
+  let editDate = dateFR(document.getElementById("date").value);
   let editDescription = document.getElementById("description").value;
   fetch('http://127.0.0.1:8080/todos/edit/' + this.id, {
   method:'put',

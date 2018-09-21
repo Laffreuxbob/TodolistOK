@@ -232,7 +232,7 @@ server.put('/todos/edit/:name', (req, res) => {
     /* attribution des nouvelles key_value editees */ 
     let editedName = (datas.name === "//" || "" ?  todoToEdit.name : datas.name);
     let editedDate = (datas.date === "//" || "" ?  todoToEdit.date : datas.date);
-    let editedDescription = (datas.description === "//" || "" ? todoToEdit.description : datas.description);
+    let editedDescription = (datas.description === "//" || "" || !datas.description ? todoToEdit.description : datas.description);
     
     /* creation du nouvel objet tache */
     let editedItem = {

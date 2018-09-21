@@ -3,9 +3,9 @@
     /*border: 1px solid red;*/
 }
 
-/* body{
+body{
     overflow: hidden;
-} */
+}
 
 h1{
     /*flex: 100%;*/
@@ -42,8 +42,16 @@ h3 {
 
 #todoListDisplay{
     flex: 33%;
+    height: 400px;
+    max-height: 400px;
     overflow-y: scroll;
 }
+
+#todoListDisplay::-webkit-scrollbar { 
+    display: none; 
+}
+
+
 
 #todoListDisplayDone{
     flex: 34%;
