@@ -1,3 +1,40 @@
 h1{
     color: red;
 }
+
+.testpop{
+    border: 1px solid green;
+}
+
+.popup{
+    text-decoration: none;
+    
+    color: inherit;
+    text-shadow: 0 -1px 0 black;
+}
+
+.popup:hover, .popup:focus{
+    background: rgba(0,0,0,.3);
+    box-shadow: 0 1px 0 rgba(255,255,255,.1);
+    transition-delay: 1s; 
+}
+
+.popup span{
+    position: absolute;
+    margin-top: 25 px;
+    margin-left: 30 px;
+    color: #09c;
+    background:rgba(0,0,0,.9);
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 0 2px rgba(0,0,0,.5);
+    transform: scale(0) rotate(-15deg);
+    transition: all .5s;
+    opacity: 0;
+}
+
+.popup:hover span, popup:focus span{
+    transform: scale(1) rotate(0);
+    opacity:1;
+    transition-delay: 1s;
+}

@@ -155,6 +155,7 @@ server.post('/todos/add', (req, res) => {
 
     res.write("Nouvelle entree enregistree : \n")
     res.write(JSON.stringify(newItem) + '\n')
+    console.log(JSON.stringify(newItem))
     res.end();
 })
 
