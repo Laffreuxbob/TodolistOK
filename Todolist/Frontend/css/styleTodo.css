@@ -3,6 +3,10 @@
     /*border: 1px solid red;*/
 }
 
+/* body{
+    overflow: hidden;
+} */
+
 h1{
     /*flex: 100%;*/
     margin-top: 2%;
@@ -24,20 +28,37 @@ h3 {
 #mainContent{
     display: flex;
     flex-direction: row;
+    margin-top: 2%;
+}
+
+#mainContent > div {
+    border: 1px solid grey;
+    padding: 1rem;
+}
+
+#formAdd{
+    flex: 18%
 }
 
 #todoListDisplay{
-    flex: 50%;
-    margin-top: 2%;
+    flex: 33%;
+    overflow-y: scroll;
 }
+
+#todoListDisplayDone{
+    flex: 34%;
+}
+
 #infosToDisplay{
-    flex:50%;
+    flex:15%;
 }
 
 li > button {
     text-align: left;
     float: right;
 }
+
+/*
 .popup{
     text-decoration: none;
     
@@ -70,3 +91,4 @@ li > button {
     opacity:1;
     transition-delay: 1s;
 }
+*/

@@ -16,7 +16,7 @@ server.use((req, res, next) => {
     res.header('Content-Type', 'application/json')
     next()
 })
-  
+
 // Facon presque propre d'eviter le probleme de header CORS
 const allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
@@ -32,25 +32,29 @@ const todos = [
         name: "Linux",
         date: "18-09-2018",
         ajout: "12-09-2018",
-        description: "Installer Linux"
+        description: "Installer Linux",
+        done: false
     },
     {
         name: "Test",
         date: "18-09-2018",
         ajout: "13-09-2018",
-        description: "Realiser les tests de qualif"
+        description: "Realiser les tests de qualif",
+        done: false
     },
     {
         name: "Todolist",
         date: "18-09-2018",
         ajout: "16-09-2018",
-        description: "Implementer une todolist en nodeJS"
+        description: "Implementer une todolist en nodeJS",
+        done: false
     },
     {
         name: "Alternance",
         date: "11-09-2020",
         ajout: "12-09-2018",
-        description: "Apprendre plein de trucs trop bien"
+        description: "Apprendre plein de trucs trop bien",
+        done: false
     }
 ]
 
@@ -93,7 +97,7 @@ server.get('/version', (req, res) => {
     console.log('version: ' + pkg.version);
     //res.send('version : ' +  pkg.version + '\n').end()
     res.send(JSON.stringify(pkg.version) ).end()
-
+    
 })
 
 // Methode GET pour recuperer la totalite de la liste de taches
@@ -106,7 +110,7 @@ server.get('/todos', (req, res) => {
     }
     
     res.status(200)
-
+    
     console.log('Liste de taches :')
     console.log(todos || "Liste de taches vide");
     console.log('------------------------')
@@ -135,29 +139,31 @@ server.get('/todos/:name', (req, res) => {
 // Methode POST pour ajouter un nouvel element a la liste en cours
 // curl -X POST -H "Content-Type: application/json" -d '{"name":"NouveauProjet", "date":"25-09-2019", "description":"Projet test delai"}' http://localhost:8080/todos/add
 server.post('/todos/add', (req, res) => {
-   
+    
     const data = req.body; // recuperation des donnees dans le body de la requete
-
+    
     // attribution des nouvelles key_value  
     let newName = (data.name || "default_name");
     let newDate = (data.date || "11-09-2020");
     let newDescription = (data.description || "default_description");
-
+    
     // creation du nouvel objet tache 
     let newItem = {
         "name":newName,
         "date":newDate,
         "ajout": moment().format('DD-MM-YYYY'),
-        "description":newDescription
+        "description":newDescription,
+        "done": false
     }
     // ajout a la liste 
     todos.push(newItem);
     
     res.status(200);
-
-    res.write("Nouvelle entree enregistree : \n")
-    res.write(JSON.stringify(newItem) + '\n')
+    
+    //res.write("Nouvelle entree enregistree : \n")
+    //res.write(JSON.stringify(newItem) + '\n')
     console.log(JSON.stringify(newItem))
+    res.send(JSON.stringify(newItem))
     res.end();
 })
 
@@ -192,14 +198,14 @@ server.get('/todosInfos/:name', (req, res) => {
     
     let dateEnd = moment(todoToGet.date,"DD-MM-YYYY" )
     let dateStart = moment(todoToGet.ajout,"DD-MM-YYYY" )
-
+    
     let timeAll = dateEnd.diff(dateStart) / (1000 * 60 * 60 * 24);
     let timeLeft = Math.trunc(dateEnd.diff(moment()) / (1000 * 60 * 60 * 24));
-
+    
     console.log('Delai total pour la tache ' + todoToSearch + " : " + timeAll + "jour(s)")
     console.log('Delai restant pour la tache ' + todoToSearch + " : " + timeLeft + "jour(s)")
     console.log('------------------------' + '\n')
-
+    
     res.send( {"total":timeAll, "restant":timeLeft})
     res.end();
 })
@@ -209,11 +215,11 @@ server.get('/todosInfos/:name', (req, res) => {
 // curl -X PUT -H "Content-Type: application/json" -d '{"name":"editedName","date":"editedDate","description":"//"}' "http://localhost:8080/todos/edit/Linux"
 
 server.put('/todos/edit/:name', (req, res) => {
-
+    
     let nameToEdit = req.params.name;
     let todoToEdit = null;
     let index = null;
-
+    
     todos.forEach( item => {
         if(item.name === nameToEdit){
             todoToEdit = item;
@@ -222,26 +228,61 @@ server.put('/todos/edit/:name', (req, res) => {
     })
     
     let datas = req.body;
-
+    
     /* attribution des nouvelles key_value editees */ 
     let editedName = (datas.name === "//" || "" ?  todoToEdit.name : datas.name);
     let editedDate = (datas.date === "//" || "" ?  todoToEdit.date : datas.date);
-    let editedDescription = (datas.description === "//" ? todoToEdit.description : datas.description);
-
+    let editedDescription = (datas.description === "//" || "" ? todoToEdit.description : datas.description);
+    
     /* creation du nouvel objet tache */
     let editedItem = {
         "name":editedName,
         "date":editedDate,
         "ajout": todoToEdit.ajout,
-        "description":editedDescription
+        "description":editedDescription,
+        "done": false
     }
-
+    
     // Edition de la nouvelle tache
     todos[index] = editedItem;
-
+    
     // res.write(JSON.stringify("to edit : " + JSON.stringify(todoToEdit)) + '\n');
     // res.write(JSON.stringify(" edited : " + JSON.stringify(editedItem)) + '\n');
+    
+    res.status(200);
+    res.end();
+})
 
+server.put('/todos/editDone/:name', (req, res) => {
+    
+    let nameToEdit = req.params.name;
+    let todoToEdit = null;
+    let index = null;
+    
+    todos.forEach( item => {
+        if(item.name === nameToEdit){
+            todoToEdit = item;
+            index = todos.indexOf(item);
+        } 
+    })
+    
+    let datas = req.body;
+    
+    /* creation du nouvel objet tache */
+    let editedItem = {
+        "name":todoToEdit.name,
+        "date":todoToEdit.date,
+        "ajout": todoToEdit.ajout,
+        "description":todoToEdit.description,
+        "done": !todoToEdit.done
+    }
+    
+    // Edition de la nouvelle tache
+    todos[index] = editedItem;
+    
+    // res.write(JSON.stringify("to edit : " + JSON.stringify(todoToEdit)) + '\n');
+    // res.write(JSON.stringify(" edited : " + JSON.stringify(editedItem)) + '\n');
+    
     res.status(200);
     res.end();
 })

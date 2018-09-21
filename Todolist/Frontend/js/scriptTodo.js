@@ -1,24 +1,27 @@
 function getTodos(){
   fetch('http://127.0.0.1:8080/todos/', {method:'get'})
   .then(response =>  response.json())
-  .then(data => {console.log(data); displayTodos(data)})
+  .then(data => {/*console.log(data);*/ displayTodos(data)})
   .then(data => data)
   .catch(err => {
     console.log('Error occured with fetching ressources : ' + err)
   });
 }
+
 getTodos();
 
 function displayTodos(obj){
-  let main = document.getElementById("todoListDisplay");
+  let mainToDisplay = document.getElementById("todoListDisplay");
+  let mainToDisplayDone = document.getElementById("todoListDisplayDone");
+  
   for(key in obj){
     
     let task = document.createElement('li');
     task.innerHTML = obj[key].name
     task.className = "popup list-group-item"
     
-    let data = document.createElement('span')
-    data.innerHTML = "Date : " + obj[key].date + "<br>" + "Description : " + obj[key].description
+    //let data = document.createElement('span')
+    //data.innerHTML = "Date : " + obj[key].date + "<br>" + "Description : " + obj[key].description
     
     let deleteButton = document.createElement("button");
     deleteButton.innerHTML = "Delete";
@@ -36,36 +39,69 @@ function displayTodos(obj){
     infosButton.innerHTML = "Infos";
     infosButton.id = obj[key].name
     infosButton.className = "btn btn-success";
-    infosButton.addEventListener('mouseover', infosTodo);
-    infosButton.addEventListener('mouseout', resetinfosTodo);
+    infosButton.addEventListener('click', infosTodo);
+    //infosButton.addEventListener('click', resetinfosTodo);
     
+    let doneButton = document.createElement("button");
+    doneButton.innerHTML = "Done";
+    doneButton.id = obj[key].name
+    doneButton.className = "btn btn-primary";
+    doneButton.addEventListener('click', todoDone);
     
-    task.appendChild(data)
+    task.appendChild(doneButton)
+    
+    //task.appendChild(data)
     task.appendChild(infosButton)
     task.appendChild(editButton)
     task.appendChild(deleteButton)
-    main.appendChild(task)
+    
+    
+    if (obj[key].done){
+      mainToDisplayDone.appendChild(task)
+    }else{
+      mainToDisplay.appendChild(task)
+    }
   }
 }
 
 function infosTodo(){
   let infos = document.getElementById("infos")
+  infos.innerHTML = "";
   fetch('http://127.0.0.1:8080/todos/' + this.id, {method:'get'})
   .then(response =>  response.json())
-  .then(data => {console.log(data); infos.innerHTML = JSON.stringify(data); })
-  .then(data => data)
-  .catch(err => {
-    console.log('Error occured with fetching ressources : ' + err)
-  });
-
-  fetch('http://127.0.0.1:8080/todosInfos/' + this.id, {method:'get'})
-  .then(response =>  response.json())
-  .then(data => {console.log(data); infos.innerHTML += JSON.stringify(data); })
+  .then(data => { /*console.log(data);*/ infos.innerHTML = JSON.stringify(data); })
   .then(data => data)
   .catch(err => {
     console.log('Error occured with fetching ressources : ' + err)
   });
   
+  fetch('http://127.0.0.1:8080/todosInfos/' + this.id, {method:'get'})
+  .then(response =>  response.json())
+  .then(data => {/*console.log(data);*/ infos.innerHTML += JSON.stringify(data); })
+  .then(data => data)
+  .catch(err => {
+    console.log('Error occured with fetching ressources : ' + err)
+  });
+  
+}
+
+function todoDone(){
+  console.log("done")
+  fetch('http://127.0.0.1:8080/todos/editDone/' + this.id, {
+  method:'put',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+  //body:JSON.stringify({"name": editName, "date": String(editDate), "description": editDescription})
+})
+.then(response =>  response.json())
+.then(data => {console.log(data); displayTodos(data)})
+.then(data => data)
+.catch(err => {
+  console.log('Error occured with fetching ressources : ' + err)
+});
+document.location.reload();
 }
 
 function resetinfosTodo(){
@@ -118,10 +154,28 @@ function editTodo(){
 document.location.reload();
 }
 
+function dateFR(date){
+  dateArray = date.split('-');
+  dateFR = "";
+  for (let i = 2; i > -1; i--){
+    console.log(dateArray[i] )
+    dateFR += dateArray[i] 
+    if(i === 2 || i === 1){
+      dateFR += "-";
+    }
+  }
+  console.log(dateFR)
+}
+
 function addTodo(){
+  
+  let main = document.getElementById("todoListDisplay");
+  
   let newName = document.getElementById("name").value;
   let newDate = document.getElementById("date").value;
   let newDescription = document.getElementById("description").value;
+
+  document.getElementById("test").innerHTML = newDate
   
   fetch('http://127.0.0.1:8080/todos/add', {
   method:'post',
@@ -138,11 +192,13 @@ function addTodo(){
   console.log('Error occured with fetching ressources : ' + err)
 });
 document.location.reload();
+
 }
 
 function test(){
   console.log("test")
 }
+
 
 
 

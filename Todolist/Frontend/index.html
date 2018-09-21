@@ -11,33 +11,41 @@
 </head>
 <body>
     <div>
-            <h1>To Do List</h1>
-            <button id="version" onclick="getVersion()">Version</button>
+        <h1>To Do List</h1>
+        <button id="version" onclick="getVersion()">Version</button>
     </div>
     
-
+    
     <div id="mainContent">
-        <div id="todoListDisplay"></div>
+        
+        <div id="formAdd">
+            <h4>Ajout :</h4>
+            <label for="name">Name :
+                <input type="text" name="name" id="name" class="form-control">
+            </label>
+            <label for="date">Date:
+                <input type="date" name="date" id="date" class="form-control" required>
+            </label>
+            <label for="description">Description:
+                <input type="text" name="description" id="description" class="form-control">
+            </label>
+            <br>
+            <button type="submit" class="btn btn-primary" onclick=addTodo() disabled>Submit</button>
+        </div>
+        
+        <div id="todoListDisplay"> <h4>A faire</h4></div>
+        <div id="todoListDisplayDone"> <h4>Fait</h4></div>
         <div id="infosToDisplay">
             <h3>Infos</h3>
             <div id="infos"></div>
         </div>
     </div>
+
+    <div id="test"></div>
     
-
-
-    <div>
-        <label for="name">Name :
-            <input type="text" name="name" id="name">
-        </label>
-        <label for="date">Date:
-            <input type="date" name="date" id="date">
-        </label>
-        <label for="description">Description:
-            <input type="text" name="description" id="description">
-        </label>
-        <button onclick=addTodo()>Add</button>
-    </div>
+    
+    
+    
     
 </body>
 </html>
