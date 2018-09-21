@@ -3,32 +3,44 @@
     /*border: 1px solid red;*/
 }
 
-body{
-    display: flex;
-    flex-direction: column;
+h1{
+    /*flex: 100%;*/
+    margin-top: 2%;
+    color: red;
+    text-align: center;
+}
+#version{
+    width: 8%;
+    margin-left: 46%;
+    margin-right: 46%
 }
 
-
-h1{
-    flex: 100%;
-    color: red;
-    text-align: center
+h3 {
+    text-decoration: underline;
+    text-align: center;
 }
 
 
 #mainContent{
-    border: 1px solid green;
+    display: flex;
+    flex-direction: row;
+}
+
+#todoListDisplay{
     flex: 50%;
+    margin-top: 2%;
+}
+#infosToDisplay{
+    flex:50%;
 }
 
 li > button {
     text-align: left;
     float: right;
-    margin-right: 1rem;
 }
 .popup{
     text-decoration: none;
-    width: 40rem;
+    
     color: inherit;
     text-shadow: 0 -1px 0 black;
 }

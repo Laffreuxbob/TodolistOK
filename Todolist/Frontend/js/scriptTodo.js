@@ -25,18 +25,63 @@ function displayTodos(obj){
     deleteButton.id = obj[key].name
     deleteButton.className = "btn btn-danger";
     deleteButton.addEventListener('click', deleteTodo);
-
+    
     let editButton = document.createElement("button");
     editButton.innerHTML = "Edit";
     editButton.id = obj[key].name
     editButton.className = "btn btn-warning";
     editButton.addEventListener('click', editTodo);
     
+    let infosButton = document.createElement("button");
+    infosButton.innerHTML = "Infos";
+    infosButton.id = obj[key].name
+    infosButton.className = "btn btn-success";
+    infosButton.addEventListener('mouseover', infosTodo);
+    infosButton.addEventListener('mouseout', resetinfosTodo);
+    
+    
     task.appendChild(data)
+    task.appendChild(infosButton)
     task.appendChild(editButton)
     task.appendChild(deleteButton)
     main.appendChild(task)
   }
+}
+
+function infosTodo(){
+  let infos = document.getElementById("infos")
+  fetch('http://127.0.0.1:8080/todos/' + this.id, {method:'get'})
+  .then(response =>  response.json())
+  .then(data => {console.log(data); infos.innerHTML = JSON.stringify(data); })
+  .then(data => data)
+  .catch(err => {
+    console.log('Error occured with fetching ressources : ' + err)
+  });
+
+  fetch('http://127.0.0.1:8080/todosInfos/' + this.id, {method:'get'})
+  .then(response =>  response.json())
+  .then(data => {console.log(data); infos.innerHTML += JSON.stringify(data); })
+  .then(data => data)
+  .catch(err => {
+    console.log('Error occured with fetching ressources : ' + err)
+  });
+  
+}
+
+function resetinfosTodo(){
+  let infos = document.getElementById("infos")
+  infos.innerHTML = ""
+}
+
+function getVersion(){
+  fetch('http://127.0.0.1:8080/version/', {method:'get'})
+  .then(response =>  response.json())
+  .then(data => {alert("Version : " + JSON.stringify(data));})
+  .then(data => data)
+  .catch(err => {
+    console.log('Error occured with fetching ressources : ' + err)
+  });
+  
 }
 
 function deleteTodo(){
@@ -53,31 +98,30 @@ function deleteTodo(){
 
 function editTodo(){
   console.log(this.id)
-  let newName = document.getElementById("name").value;
-  let newDate = document.getElementById("date").value;
-  let newDescription = document.getElementById("description").value;
-  fetch('http://127.0.0.1:8080/todos/edit' + this.id, {
-    method:'put',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body:JSON.stringify({"name": newName, "date": newDate, "description": newDescription})
-  })
-  .then(response =>  response.json())
-  .then(data => {console.log(data); displayTodos(data)})
-  .then(data => data)
-  .catch(err => {
-    console.log('Error occured with fetching ressources : ' + err)
-  });
-  document.location.reload();
+  let editName = document.getElementById("name").value;
+  let editDate = document.getElementById("date").value;
+  let editDescription = document.getElementById("description").value;
+  fetch('http://127.0.0.1:8080/todos/edit/' + this.id, {
+  method:'put',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body:JSON.stringify({"name": editName, "date": String(editDate), "description": editDescription})
+})
+.then(response =>  response.json())
+.then(data => {console.log(data); displayTodos(data)})
+.then(data => data)
+.catch(err => {
+  console.log('Error occured with fetching ressources : ' + err)
+});
+document.location.reload();
 }
 
 function addTodo(){
   let newName = document.getElementById("name").value;
   let newDate = document.getElementById("date").value;
   let newDescription = document.getElementById("description").value;
-  
   
   fetch('http://127.0.0.1:8080/todos/add', {
   method:'post',

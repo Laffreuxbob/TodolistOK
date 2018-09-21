@@ -91,7 +91,9 @@ server.get('/version', (req, res) => {
     }
     res.status(200);
     console.log('version: ' + pkg.version);
-    res.send('version : ' +  pkg.version + '\n').end()
+    //res.send('version : ' +  pkg.version + '\n').end()
+    res.send(JSON.stringify(pkg.version) ).end()
+
 })
 
 // Methode GET pour recuperer la totalite de la liste de taches
@@ -127,7 +129,7 @@ server.get('/todos/:name', (req, res) => {
     console.log('Resultat de la cherche avec le mot : ' + todoToSearch)
     console.log(todoToDisplay || 'Aucun resultat pour cette recherche');
     console.log('------------------------')
-    res.send(JSON.stringify(todoToDisplay) + '\n').end();
+    res.send(JSON.stringify(todoToDisplay)).end();
 })
 
 // Methode POST pour ajouter un nouvel element a la liste en cours
@@ -137,9 +139,9 @@ server.post('/todos/add', (req, res) => {
     const data = req.body; // recuperation des donnees dans le body de la requete
 
     // attribution des nouvelles key_value  
-    let newName = data.name;
-    let newDate = data.date;
-    let newDescription = data.description;
+    let newName = (data.name || "default_name");
+    let newDate = (data.date || "11-09-2020");
+    let newDescription = (data.description || "default_description");
 
     // creation du nouvel objet tache 
     let newItem = {
@@ -197,6 +199,8 @@ server.get('/todosInfos/:name', (req, res) => {
     console.log('Delai total pour la tache ' + todoToSearch + " : " + timeAll + "jour(s)")
     console.log('Delai restant pour la tache ' + todoToSearch + " : " + timeLeft + "jour(s)")
     console.log('------------------------' + '\n')
+
+    res.send( {"total":timeAll, "restant":timeLeft})
     res.end();
 })
 
@@ -220,8 +224,8 @@ server.put('/todos/edit/:name', (req, res) => {
     let datas = req.body;
 
     /* attribution des nouvelles key_value editees */ 
-    let editedName = (datas.name === "//" ?  todoToEdit.name : datas.name);
-    let editedDate = (datas.date === "//" ?  todoToEdit.date : datas.date);
+    let editedName = (datas.name === "//" || "" ?  todoToEdit.name : datas.name);
+    let editedDate = (datas.date === "//" || "" ?  todoToEdit.date : datas.date);
     let editedDescription = (datas.description === "//" ? todoToEdit.description : datas.description);
 
     /* creation du nouvel objet tache */
