@@ -165,6 +165,7 @@ function dateFR(date){
     }
   }
   console.log(dateFR)
+  return dateFR;
 }
 
 function addTodo(){
@@ -172,10 +173,8 @@ function addTodo(){
   let main = document.getElementById("todoListDisplay");
   
   let newName = document.getElementById("name").value;
-  let newDate = document.getElementById("date").value;
+  let newDate = dateFR(document.getElementById("date").value);
   let newDescription = document.getElementById("description").value;
-
-  document.getElementById("test").innerHTML = newDate
   
   fetch('http://127.0.0.1:8080/todos/add', {
   method:'post',
