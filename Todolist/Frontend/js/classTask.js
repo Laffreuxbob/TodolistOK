@@ -38,6 +38,12 @@ class Task {
         doneButton.className = "btn btn-success";
         //button.addEventListener("click", () => {console.log("button")})
         doneButton.addEventListener("click", this.editDone);
+
+        let infosButton = document.createElement('button');
+        infosButton.innerHTML = "infos";
+        infosButton.className = "btn btn-info";
+        //button.addEventListener("click", () => {console.log("button")})
+        infosButton.addEventListener("click", this.infos);
         
         let editButton = document.createElement('button');
         editButton.innerHTML = "edit";
@@ -71,16 +77,15 @@ class Task {
         
         task.appendChild(deleteButton);
         task.appendChild(doneButton);
-        task.appendChild(editButton)
-        task.appendChild(editForm)
+        task.appendChild(editButton);
+        task.appendChild(infosButton);
+        task.appendChild(editForm);
         
         
         main.prepend(task);
     }
     
     delete(){
-
-
         let popup = document.createElement("div");
         popup.id = "popupDelete"
         
@@ -129,8 +134,15 @@ class Task {
         taskToDone.remove();
         let todoListDone = document.getElementById("todoListDisplayDone")
         todoListDone.appendChild(taskToDone)
-        //console.log(taskToDone.children)
-        //this.remove()
+        
+    }
+
+    infos(){
+        console.log("infos");
+
+        let idToInfos = String(this.parentNode.id);
+        console.log(idToInfos)
+        infosTodo(idToInfos);
     }
 }
 

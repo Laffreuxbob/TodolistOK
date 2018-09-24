@@ -23,10 +23,10 @@ function displayTodos(obj){
   }
 }
 
-function infosTodo(){
+function infosTodo(id){
   let infos = document.getElementById("infos")
   infos.innerHTML = "";
-  fetch('http://127.0.0.1:8080/todos/' + this.id, {method:'get'})
+  fetch('http://127.0.0.1:8080/todos/' + id, {method:'get'})
   .then(response =>  response.json())
   .then(data => { /*console.log(data);*/ infos.innerHTML = JSON.stringify(data); })
   .then(data => data)
@@ -34,7 +34,7 @@ function infosTodo(){
     console.log('Error occured with fetching ressources : ' + err)
   });
   
-  fetch('http://127.0.0.1:8080/todosInfos/' + this.id, {method:'get'})
+  fetch('http://127.0.0.1:8080/todosInfos/' + id, {method:'get'})
   .then(response =>  response.json())
   .then(data => {/*console.log(data);*/ infos.innerHTML += JSON.stringify(data); })
   .then(data => data)
@@ -130,7 +130,7 @@ function addTodo(){
   let main = document.getElementById("todoListDisplay");
   
   let newName = (document.getElementById("name").value || "default_name");
-  let newDate = (/*dateFR*/(document.getElementById("date").value) || "11-09-2020");
+  let newDate = (dateFR(document.getElementById("date").value) || "11-09-2020");
   let newDescription = (document.getElementById("description").value || "default_description");
   
   fetch('http://127.0.0.1:8080/todos/add', {
