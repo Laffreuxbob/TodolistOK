@@ -138,10 +138,7 @@ class Task {
     }
 
     infos(){
-        console.log("infos");
-
         let idToInfos = String(this.parentNode.id);
-        console.log(idToInfos)
         infosTodo(idToInfos);
     }
 }

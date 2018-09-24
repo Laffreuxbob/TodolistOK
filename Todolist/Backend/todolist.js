@@ -122,7 +122,7 @@ server.get('/todosSearch/:name', (req, res) => {
     const todoToSearch = req.params.name; /* on recupere les mot cle de recherche*/ 
     let todoToDisplay = null; /* on prepare un objet vide pour recuperer une tache si elle existe */
     todos.forEach( item => {
-        if(item.name === todoToSearch){
+        if(item.name.toLowerCase() === todoToSearch.toLowerCase()){
             todoToDisplay = item;
         }
     })

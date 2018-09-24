@@ -59,7 +59,7 @@ h3 {
 
 
 #todoListDisplayDoneContain{
-    flex: 34%;
+    flex: 28%;
 }
 
 #todoListDisplayDone{
@@ -75,6 +75,7 @@ h3 {
 
 #infosToDisplay{
     flex:15%;
+    
 }
 
 li > button {
@@ -102,6 +103,23 @@ li > button {
     top: 50%;
     transform: translate(-50%, -50%);
     background-color: lightgray;
+}
+
+#resultsSearch{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    
+    background-color: lightgray;
+}
+#displayResultsSearch{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(51,51,51,0.4);
+    z-index: 10;
 }
 
 /*

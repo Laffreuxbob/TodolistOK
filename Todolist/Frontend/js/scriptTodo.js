@@ -44,6 +44,16 @@ function infosTodo(id){
   
 }
 
+function searchTask(name){
+  fetch('http://127.0.0.1:8080/todosSearch/' + name, {method:'get'})
+  .then(response =>  response.json())
+  .then(data => {  /*console.log(data); */ displaySearch(data)})
+  .then(data => data)
+  .catch(err => {
+    console.log('Error occured with fetching ressources : ' + err)
+  });
+}
+
 function todoDone(id){
   console.log("done")
   fetch('http://127.0.0.1:8080/todos/editDone/' + id, {
@@ -79,10 +89,10 @@ function getVersion(){
 }
 
 function deleteTodo(id){
-
+  
   fetch('http://127.0.0.1:8080/delete/' + id, {method:'delete'})
   .then(response =>  response.json())
-  .then(data => {console.log(data); displayTodos(data)})
+  //.then(data => {console.log(data); displayTodos(data)})
   .then(data => data)
   .catch(err => {
     console.log('Error occured with fetching ressources : ' + err)
@@ -128,9 +138,10 @@ function dateFR(date){
 function addTodo(){
   
   let main = document.getElementById("todoListDisplay");
+  let newDate = (document.getElementById("date").value || "11-09-2020" );
   
   let newName = (document.getElementById("name").value || "default_name");
-  let newDate = (dateFR(document.getElementById("date").value) || "11-09-2020");
+  
   let newDescription = (document.getElementById("description").value || "default_description");
   
   fetch('http://127.0.0.1:8080/todos/add', {
@@ -156,6 +167,51 @@ function addTodo(){
 //document.location.reload();
 
 }
+
+function displaySearch(data){
+  console.log("display")
+  console.log(data)
+  let displayResultsSearch = document.createElement('div');
+  displayResultsSearch.id = "displayResultsSearch";
+  let resultsSearch = document.createElement('div');
+  resultsSearch.id = "resultsSearch";
+
+  for(let key in data){
+    let info = document.createElement('div');
+    info.innerHTML = key + " : " + data[key];
+    resultsSearch.appendChild(info);
+  }
+
+
+
+  let closeButton = document.createElement('button');
+  closeButton.addEventListener("click", () => {
+    document.getElementById("displayResultsSearch").remove();
+  });
+  closeButton.innerHTML = "close";
+
+  displayResultsSearch.appendChild(resultsSearch);
+  displayResultsSearch.appendChild(closeButton);
+
+  document.getElementById("mainContent").appendChild(displayResultsSearch);
+
+}
+
+
+window.onload=function(){
+  let inputSearch = document.getElementById("searchTask")
+  
+  inputSearch.addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+      console.log(inputSearch.value)
+      searchTask(inputSearch.value)
+      inputSearch.value = "";
+    }
+  });
+}
+
+
 
 function test(){
   console.log("test")
