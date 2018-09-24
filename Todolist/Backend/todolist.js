@@ -26,7 +26,7 @@ const allowCrossDomain = function(req, res, next) {
 }
 server.use(allowCrossDomain);
 
-let idTask = 5
+let idTask = 5;
 
 // Liste fictive de taches : bdd mongo pour plus tard
 const todos = [
@@ -99,9 +99,26 @@ server.get('/todos', (req, res) => {
     //res.send("Taille : " + todos.length + '\n').end();
 });
 
+// Methode GET pour recuperer un element par recherche d'id
+// curl http://127.0.0.1:8080/todos/1
+server.get('/todos/:id', (req, res) => {
+    const todoToSearch = String(req.params.id); /* on recupere les mot cle de recherche*/ 
+    let todoToDisplay = null; /* on prepare un objet vide pour recuperer une tache si elle existe */
+    todos.forEach( item => {
+        if(String(item.id) === todoToSearch){
+            todoToDisplay = item;
+        }
+    })
+    res.status(200);
+    console.log('Resultat de la cherche avec le mot : ' + todoToSearch)
+    console.log(todoToDisplay || 'Aucun resultat pour cette recherche');
+    console.log('------------------------')
+    res.send(JSON.stringify(todoToDisplay)).end();
+})
+
 // Methode GET pour recuperer un element par recherche de mot cle
-// curl http://127.0.0.1:8080/todos/Linux
-server.get('/todos/:name', (req, res) => {
+// curl http://127.0.0.1:8080/todosSearch/Linux
+server.get('/todosSearch/:name', (req, res) => {
     const todoToSearch = req.params.name; /* on recupere les mot cle de recherche*/ 
     let todoToDisplay = null; /* on prepare un objet vide pour recuperer une tache si elle existe */
     todos.forEach( item => {
@@ -168,16 +185,18 @@ server.delete('/delete/:todoToDelete', (req, res) => {
 
 // Methode qui renvoie des informations temporelles liees a la tache (delais etc...)
 // curl http://127.0.0.1:8080/todosInfos/Alternance
-server.get('/todosInfos/:name', (req, res) => {
+server.get('/todosInfos/:id', (req, res) => {
     
-    const todoToSearch = req.params.name; // on recupere les mot cle de recherche
-    let todoToGet = null; // on prepare un objet vide pour recuperer une tache si elle existe 
+    const todoToSearch = String(req.params.id); // on recupere les mot cle de recherche
+    let todoToGet; // on prepare un objet vide pour recuperer une tache si elle existe 
     
     todos.forEach( item => {
-        if(item.name === todoToSearch){
+        if(String(item.id) === todoToSearch){
             todoToGet = item;
         }
     })
+
+    console.log(todoToGet)
     res.status(200);
     
     let dateEnd = moment(todoToGet.date,"DD-MM-YYYY" )
