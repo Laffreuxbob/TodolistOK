@@ -26,21 +26,40 @@ function displayTodos(obj){
 function infosTodo(id){
   let infos = document.getElementById("infos")
   infos.innerHTML = "";
+  let data1;
+  let data2;
+  
+  var promises = urls.map(url => fetch(url).then(y => y.text()));
+  Promise.all(promises).then(results => {
+    // do something with results.
+  });
   fetch('http://127.0.0.1:8080/todos/' + id, {method:'get'})
   .then(response =>  response.json())
-  .then(data => { /*console.log(data);*/ infos.innerHTML = JSON.stringify(data); })
-  .then(data => data)
+  .then(data => {infos.innerHTML = JSON.stringify(data); return data})
+  .then(data => {
+    //console.log(JSON.stringify(data)),
+    data1 = JSON.stringify(data);
+    console.log('data1 : ', data1);
+    return data1;
+  })
   .catch(err => {
     console.log('Error occured with fetching ressources : ' + err)
   });
   
   fetch('http://127.0.0.1:8080/todosInfos/' + id, {method:'get'})
   .then(response =>  response.json())
-  .then(data => {/*console.log(data);*/ infos.innerHTML += JSON.stringify(data); })
+  .then(data => {infos.innerHTML += JSON.stringify(data); return data})
   .then(data => data)
+  .then(data => {
+    data2 = JSON.stringify(data);
+    console.log('data2 : ', data2);
+    return [data1, data2];
+  })
   .catch(err => {
     console.log('Error occured with fetching ressources : ' + err)
   });
+  
+  
   
 }
 
@@ -168,33 +187,33 @@ function addTodo(){
 
 }
 
+function displayInfo(data){
+  
+}
+
 function displaySearch(data){
-  console.log("display")
-  console.log(data)
   let displayResultsSearch = document.createElement('div');
   displayResultsSearch.id = "displayResultsSearch";
   let resultsSearch = document.createElement('div');
   resultsSearch.id = "resultsSearch";
-
+  
   for(let key in data){
     let info = document.createElement('div');
     info.innerHTML = key + " : " + data[key];
     resultsSearch.appendChild(info);
   }
-
-
-
+  
   let closeButton = document.createElement('button');
   closeButton.addEventListener("click", () => {
     document.getElementById("displayResultsSearch").remove();
   });
   closeButton.innerHTML = "close";
-
+  
   displayResultsSearch.appendChild(resultsSearch);
   displayResultsSearch.appendChild(closeButton);
-
+  
   document.getElementById("mainContent").appendChild(displayResultsSearch);
-
+  
 }
 
 
