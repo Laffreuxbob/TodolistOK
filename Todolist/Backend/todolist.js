@@ -26,9 +26,12 @@ const allowCrossDomain = function(req, res, next) {
 }
 server.use(allowCrossDomain);
 
+let idTask = 5
+
 // Liste fictive de taches : bdd mongo pour plus tard
 const todos = [
     {
+        id: 1,
         name: "Linux",
         date: "18-09-2018",
         ajout: "12-09-2018",
@@ -36,6 +39,7 @@ const todos = [
         done: false
     },
     {
+        id: 2,
         name: "Test",
         date: "18-09-2018",
         ajout: "13-09-2018",
@@ -43,6 +47,7 @@ const todos = [
         done: false
     },
     {
+        id: 3,
         name: "Todolist",
         date: "18-09-2018",
         ajout: "16-09-2018",
@@ -50,6 +55,7 @@ const todos = [
         done: false
     },
     {
+        id: 4,
         name: "Alternance",
         date: "11-09-2020",
         ajout: "12-09-2018",
@@ -58,32 +64,6 @@ const todos = [
     }
 ]
 
-// const todos = [
-//     {
-//         "name": "Linux",
-//         "date": "18-09-2018",
-//         "ajout": "12-09-2018",
-//         "description": "Installer Linux"
-//     },
-//     {
-//         "name": "Test",
-//         "date": "18-09-2018",
-//         "ajout": "13-09-2018",
-//         "description": "Realiser les tests de qualif"
-//     },
-//     {
-//         "name": "Todolist",
-//         "date": "18-09-2018",
-//         "ajout": "16-09-2018",
-//         "description": "Implementer une todolist en nodeJS"
-//     },
-//     {
-//         "name": "Alternance",
-//         "date": "11-09-2020",
-//         "ajout": "12-09-2018",
-//         "description": "Apprendre plein de trucs trop bien"
-//     }
-// ]
 
 // Methode GET pour recuperer la version du projet
 // curl http://127.0.0.1:8080/version
@@ -141,6 +121,7 @@ server.get('/todos/:name', (req, res) => {
 server.post('/todos/add', (req, res) => {
     
     const data = req.body; // recuperation des donnees dans le body de la requete
+    //console.log(body.req)
     
     // attribution des nouvelles key_value  
     let newName = (data.name || "default_name");
@@ -149,12 +130,15 @@ server.post('/todos/add', (req, res) => {
     
     // creation du nouvel objet tache 
     let newItem = {
+        "id": "huit",
         "name":newName,
         "date":newDate,
         "ajout": moment().format('DD-MM-YYYY'),
         "description":newDescription,
         "done": false
     }
+    idTask++;
+
     // ajout a la liste 
     todos.push(newItem);
     
@@ -236,6 +220,7 @@ server.put('/todos/edit/:name', (req, res) => {
     
     /* creation du nouvel objet tache */
     let editedItem = {
+        "id": todoToEdit.id,
         "name":editedName,
         "date":editedDate,
         "ajout": todoToEdit.ajout,
@@ -270,6 +255,7 @@ server.put('/todos/editDone/:name', (req, res) => {
     
     /* creation du nouvel objet tache */
     let editedItem = {
+        "id": todoToEdit.id,
         "name":todoToEdit.name,
         "date":todoToEdit.date,
         "ajout": todoToEdit.ajout,
