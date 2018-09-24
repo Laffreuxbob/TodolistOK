@@ -130,7 +130,7 @@ server.post('/todos/add', (req, res) => {
     
     // creation du nouvel objet tache 
     let newItem = {
-        "id": "huit",
+        "id": idTask,
         "name":newName,
         "date":newDate,
         "ajout": moment().format('DD-MM-YYYY'),
@@ -156,8 +156,8 @@ server.post('/todos/add', (req, res) => {
 server.delete('/delete/:todoToDelete', (req, res) => {
     const todoToDelete = req.params.todoToDelete
     todos.forEach( item => {
-        if(item.name === todoToDelete){
-            console.log("Suppresion du projet :" + item.name);
+        if(parseInt(item.id) === parseInt(todoToDelete)){
+            console.log("Suppresion du projet :" + item.id);
             let index = todos.indexOf(item);
             todos.splice(index,1);
         }
@@ -238,14 +238,15 @@ server.put('/todos/edit/:name', (req, res) => {
     res.end();
 })
 
-server.put('/todos/editDone/:name', (req, res) => {
+server.put('/todos/editDone/:id', (req, res) => {
     
-    let nameToEdit = req.params.name;
+    console.log("done")
+    let idToEdit = parseInt(req.params.id);
     let todoToEdit = null;
     let index = null;
     
     todos.forEach( item => {
-        if(item.name === nameToEdit){
+        if(item.id === idToEdit){
             todoToEdit = item;
             index = todos.indexOf(item);
         } 

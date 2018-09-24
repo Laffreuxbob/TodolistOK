@@ -9,7 +9,7 @@
     
     <script src="js/scriptTodo.js"></script>
     <script src="js/classTask.js"></script>
-
+    
 </head>
 <body>
     <div>
@@ -21,29 +21,39 @@
     <div id="mainContent">
         
         <div id="formAdd">
-            <h4>Ajout :</h4>
-            <label for="name">Name :
-                <input type="text" name="name" id="name" class="form-control">
-            </label>
-            <label for="date">Date:
-                <input type="date" name="date" id="date" class="form-control" required>
-            </label>
-            <label for="description">Description:
-                <input type="text" name="description" id="description" class="form-control">
-            </label>
-            <br>
-            <button type="submit" class="btn btn-primary" onclick=addTodo() >Submit</button>
+            <form action="">
+                <h4>Ajout :</h4>
+                <label for="name">Name :
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Name">
+                </label>
+                <label for="date">Date :
+                    <input type="date" name="date" id="date" class="form-control">
+                </label>
+                <label for="description">Description :
+                    <input type="text" name="description" id="description" class="form-control">
+                </label>
+                <br>
+                <button type="submit" class="btn btn-outline-success" onclick=addTodo() >Submit</button>
+                <button type="reset" class="btn btn-outline-danger" onclick=test() >Reset</button>
+
+            </form>
+            
+            
         </div>
         
-        <div id="todoListDisplay"> <h4>A faire</h4></div>
-        <div id="todoListDisplayDone"> <h4>Fait</h4></div>
+        <div id="todoListDisplayContain"> 
+            <h4>A faire</h4>
+            <div id="todoListDisplay"></div>
+        </div>
+        <div id="todoListDisplayDoneContain">
+             <h4>Fait</h4>
+            <div id="todoListDisplayDone"></div>
+            </div>
         <div id="infosToDisplay">
             <h3>Infos</h3>
             <div id="infos"></div>
         </div>
     </div>
-
-    <div id="test"></div>
     
     
     

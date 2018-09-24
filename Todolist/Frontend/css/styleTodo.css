@@ -32,18 +32,24 @@ h3 {
 }
 
 #mainContent > div {
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
     padding: 1rem;
+}
+
+#mainContent li {
+    padding: 5%;
 }
 
 #formAdd{
     flex: 18%
 }
 
-#todoListDisplay{
+#todoListDisplayContain{
     flex: 33%;
-    height: 400px;
-    max-height: 400px;
+}
+
+#todoListDisplay{
+    height: 70vh;
     overflow-y: scroll;
 }
 
@@ -52,10 +58,20 @@ h3 {
 }
 
 
-
-#todoListDisplayDone{
+#todoListDisplayDoneContain{
     flex: 34%;
 }
+
+#todoListDisplayDone{
+    height: 70vh;
+    overflow-y: scroll;
+}
+
+#todoListDisplayDone::-webkit-scrollbar { 
+    display: none; 
+}
+
+
 
 #infosToDisplay{
     flex:15%;
@@ -64,6 +80,28 @@ h3 {
 li > button {
     text-align: left;
     float: right;
+}
+
+#todoListDisplayDone li .btn-success {
+    display: none; 
+}
+
+#popupDelete{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(51,51,51,0.4);
+    z-index: 10;
+}
+
+#deleteControl{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: lightgray;
 }
 
 /*

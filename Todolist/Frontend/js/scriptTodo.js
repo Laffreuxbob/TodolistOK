@@ -15,7 +15,8 @@ function displayTodos(obj){
   let mainToDisplayDone = document.getElementById("todoListDisplayDone");
   
   for(key in obj){
-    let task = new Task("todoListDisplay",obj[key].id, obj[key].name, obj[key].description);
+    let parent = (obj[key].done ? "todoListDisplayDone" : "todoListDisplay")
+    let task = new Task(parent,obj[key].id, obj[key].name, obj[key].description);
     task.create();
     //console.log(task)
     
@@ -43,9 +44,9 @@ function infosTodo(){
   
 }
 
-function todoDone(){
+function todoDone(id){
   console.log("done")
-  fetch('http://127.0.0.1:8080/todos/editDone/' + this.id, {
+  fetch('http://127.0.0.1:8080/todos/editDone/' + id, {
   method:'put',
   headers: {
     'Accept': 'application/json',
@@ -77,9 +78,9 @@ function getVersion(){
   
 }
 
-function deleteTodo(){
-  console.log(this.id)
-  fetch('http://127.0.0.1:8080/delete/' + this.id, {method:'delete'})
+function deleteTodo(id){
+
+  fetch('http://127.0.0.1:8080/delete/' + id, {method:'delete'})
   .then(response =>  response.json())
   .then(data => {console.log(data); displayTodos(data)})
   .then(data => data)
