@@ -1,11 +1,9 @@
-'use strict'
+import express from 'express'; // Framework gestion serveur nodeJS
+import pkg from './package.json'; // Pour pouvoir lire les data Json
+import conf from './config'; // IP et port de notre serveur
+import moment from 'moment'; // Librairie gestion de dates
 
-const express = require('express'); // Framework gestion serveur nodeJS
-const pkg = require('./package.json'); // Pour pouvoir lire les data Json
-const conf = require('./config.js'); // IP et port de notre serveur
-const moment = require('moment'); // Librairie gestion de dates
-
-const bodyPost = require('body-parser'); // Necessaire a la lecture des data dans le body de la requete (post)
+import bodyPost from 'body-parser'; // Necessaire a la lecture des data dans le body de la requete (post)
 
 const server = express();
 

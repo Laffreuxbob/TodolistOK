@@ -2,10 +2,10 @@
   "name": "back",
   "version": "1.0.0",
   "description": "Todolist backend",
-  "main": "todolist.js",
+  "main": "todolist.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "clear \n nodemon todolist.js",
+    "dev": "clear \n nodemon --experimental-modules todolist.mjs",
     "lint": "xo"
   },
   "author": "OBR",
