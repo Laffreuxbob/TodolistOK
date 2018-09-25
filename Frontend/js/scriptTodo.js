@@ -1,13 +1,30 @@
 
 
 
+// function getLang(){
+//   var rad = document.langForm.langRadios;
+//     var prev = null;
+//     for(var i = 0; i < rad.length; i++) {
+//         rad[i].onclick = function() {
+//             (prev)? console.log(prev.value):null;
+//             if(this !== prev) {
+//                 prev = this;
+//             }
+//             console.log(this.value)
+//         };
+//     }
+
+// }
+
 function getLang(){
-  let lang = document.getElementsByClassName("radioLang");
-  console.log(lang)
-  
+  $('input[type="radio"]').on('click change', function(e) {
+    console.log(e.type);
+  });
 }
 
 getLang();
+
+
 
 
 function getTodos(){
@@ -118,13 +135,15 @@ function searchTask(name){
 function todoDone(id){
   resetinfosTodo();
   console.log("done")
-  fetch('http://127.0.0.1:8080/todos/editDone/' + id, {
+  fetch('http://127.0.0.1:8080/todos/' + id, {
   method:'put',
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   },
   //body:JSON.stringify({"name": editName, "date": String(editDate), "description": editDescription})
+  body:JSON.stringify({"done": true})
+
 })
 .then(response =>  response.json())
 .then(data => {console.log(data); displayTodos(data)})

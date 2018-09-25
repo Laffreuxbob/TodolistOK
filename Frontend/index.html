@@ -7,6 +7,7 @@
     
     <link rel="stylesheet" type="text/css" href="css/styleTodo.css">
     
+    <script src="http://code.jquery.com/jquery-1.7.1.js"></script>
     <script src="js/scriptTodo.js"></script>
     <script src="js/classTask.js"></script>
     
@@ -18,54 +19,56 @@
         <label for="search">Rechecher une tache :
             <input type="text" id="searchTask">
         </label>
-
-        <form action="">
-            <input type="radio" class="radioLang" value="1" name="lang" checked onclick="getLang"> Fr
-            <input type="radio" class="radioLang" value="2" name="lang" onclick="getLang"> En
-        </form>
-    </div>
-    
-    
-    <div id="mainContent">
         
-        <div id="formAdd">
-            <div>
-                <h4>Ajout : </h4>
-                <label for="name">Name :
-                    <input type="text" name="name" id="name" class="form-control" placeholder="Name">
-                </label>
-                <label for="date">Date :
-                    <input type="date" name="date" id="date" class="form-control">
-                </label>
-                <label for="description">Description :
-                    <input type="text" name="description" id="description" class="form-control">
-                </label>
-                <br>
-                <button type="submit" class="btn btn-outline-success" onclick=addTodo() >Submit</button>
-                <button type="reset" class="btn btn-outline-danger" onclick=test() >Reset</button>
-
-            </div>
-            
-            
+        <form name="langForm" action="">
+            <!-- <input type="radio" class="radioLang" value="1" name="radioLang" checked> Fr
+                <input type="radio" class="radioLang" value="2" name="radioLang"> En -->
+                <label><input type="radio" value="1" name="my-radio">Radio One</label>
+                <label><input type="radio" value="2" name="my-radio">Radio One</label>
+            </form>
         </div>
         
-        <div id="todoListDisplayContain"> 
-            <h4>A faire</h4>
-            <div id="todoListDisplay"></div>
-        </div>
-        <div id="todoListDisplayDoneContain">
-             <h4>Fait</h4>
-            <div id="todoListDisplayDone"></div>
+        
+        <div id="mainContent">
+            
+            <div id="formAdd">
+                <div>
+                    <h4>Ajout : </h4>
+                    <label for="name">Name :
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Name">
+                    </label>
+                    <label for="date">Date :
+                        <input type="date" name="date" id="date" class="form-control">
+                    </label>
+                    <label for="description">Description :
+                        <input type="text" name="description" id="description" class="form-control">
+                    </label>
+                    <br>
+                    <button type="submit" class="btn btn-outline-success" onclick=addTodo() >Submit</button>
+                    <button type="reset" class="btn btn-outline-danger" onclick=test() >Reset</button>
+                    
+                </div>
+                
+                
             </div>
-        <div id="infosToDisplay">
-            <h3>Infos</h3>
-            <div id="infos"></div>
+            
+            <div id="todoListDisplayContain"> 
+                <h4>A faire</h4>
+                <div id="todoListDisplay"></div>
+            </div>
+            <div id="todoListDisplayDoneContain">
+                <h4>Fait</h4>
+                <div id="todoListDisplayDone"></div>
+            </div>
+            <div id="infosToDisplay">
+                <h3>Infos</h3>
+                <div id="infos"></div>
+            </div>
         </div>
-    </div>
-    
-    
-    
-    
-    
-</body>
-</html>
+        
+        
+        
+        
+        
+    </body>
+    </html>
