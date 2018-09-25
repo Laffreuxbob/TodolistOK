@@ -167,8 +167,8 @@ server.post('/todos/add', (req, res) => {
     res.end();
 })
 
-// Methode DELETE pour supprimer un element de la liste avec un mot cle
-// curl -X DELETE  http://127.0.0.1:8080/delete/Test
+// Methode DELETE pour supprimer un element de la liste avec une id
+// curl -X DELETE  http://127.0.0.1:8080/delete/2
 server.delete('/delete/:todoToDelete', (req, res) => {
     const todoToDelete = req.params.todoToDelete
     todos.forEach( item => {
@@ -182,8 +182,8 @@ server.delete('/delete/:todoToDelete', (req, res) => {
     res.end();
 })
 
-// Methode qui renvoie des informations temporelles liees a la tache (delais etc...)
-// curl http://127.0.0.1:8080/todosInfos/Alternance
+// Methode qui renvoie des informations temporelles liees a la tache (delais etc...) avec l'id
+// curl http://127.0.0.1:8080/todosInfos/1
 server.get('/todosInfos/:id', (req, res) => {
     
     const todoToSearch = String(req.params.id); // on recupere les mot cle de recherche
@@ -214,14 +214,14 @@ server.get('/todosInfos/:id', (req, res) => {
 
 
 // Methode d'edition et de mise a jour d'une tache (on utilise le // pour garder la valeur actuelle)
-// curl -X PUT -H "Content-Type: application/json" -d '{"name":"editedName","date":"editedDate"}' "http://localhost:8080/todos/edit/Linux"
+// curl -X PUT -H "Content-Type: application/json" -d '{"name":"editedName","date":"editedDate"}' "http://localhost:8080/todos/2"
+// curl -X PUT -H "Content-Type: application/json" -d '{"done":"true"}' "http://localhost:8080/todos/1"
 
 server.put('/todos/:id', (req, res) => {
     let idTodoToEdit = parseInt(req.params.id);
-    let todoToEdit = null;
     let index = null;
     
-    todoToDisplay = todos.find(element => {
+    let todoToEdit = todos.find(element => {
         return element.id === idTodoToEdit;
     });
     
