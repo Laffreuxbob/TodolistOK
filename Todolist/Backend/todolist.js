@@ -217,14 +217,14 @@ server.get('/todosInfos/:id', (req, res) => {
 // Methode d'edition et de mise a jour d'une tache (on utilise le // pour garder la valeur actuelle)
 // curl -X PUT -H "Content-Type: application/json" -d '{"name":"editedName","date":"editedDate","description":"//"}' "http://localhost:8080/todos/edit/Linux"
 
-server.put('/todos/edit/:name', (req, res) => {
+server.put('/todos/edit/:id', (req, res) => {
     
-    let nameToEdit = req.params.name;
+    let nameToEdit = parseInt(req.params.id);
     let todoToEdit = null;
     let index = null;
     
     todos.forEach( item => {
-        if(item.name === nameToEdit){
+        if(item.id === nameToEdit){
             todoToEdit = item;
             index = todos.indexOf(item);
         } 
@@ -244,7 +244,7 @@ server.put('/todos/edit/:name', (req, res) => {
         "date":editedDate,
         "ajout": todoToEdit.ajout,
         "description":editedDescription,
-        "done": false
+        "done": todoToEdit.done
     }
     
     // Edition de la nouvelle tache

@@ -51,12 +51,16 @@ class Task {
         //button.addEventListener("click", () => {console.log("button")})
         editButton.addEventListener("click", displayEditor);
         
-        let editForm = document.createElement('form');
+        let editForm = document.createElement('div');
         editForm.id = "editForm";
         let editName = document.createElement('input');
         editName.placeholder = "nouveau nom"
+        editName.id = "newNameEdit";
         let editSubmit = document.createElement('button');
-        editSubmit.innerHTML = "edit"
+        editSubmit.innerHTML = "EditName"
+        editSubmit.id = "editSubmitButton"
+        //editSubmit.className = "btn btn-success";
+        editSubmit.addEventListener("click", this.editName)
         
         editForm.appendChild(editName);
         editForm.appendChild(editSubmit);
@@ -86,6 +90,8 @@ class Task {
     }
     
     delete(){
+
+        resetinfosTodo()
         let popup = document.createElement("div");
         popup.id = "popupDelete"
         
@@ -105,6 +111,7 @@ class Task {
         deleteControl.appendChild(deleteCancel);
         
         deleteOK.addEventListener("click", () => {
+            
             let idToDelete = this.parentNode.id;
 
             deleteTodo(idToDelete)
@@ -113,6 +120,7 @@ class Task {
             taskToDelete.remove();
 
             document.getElementById("popupDelete").remove();  
+            resetinfosTodo()
         })
 
         deleteCancel.addEventListener("click", () => {
@@ -135,6 +143,18 @@ class Task {
         let todoListDone = document.getElementById("todoListDisplayDone")
         todoListDone.appendChild(taskToDone)
         
+    }
+
+    editName(){
+        //console.log("editname")
+        let newName = document.getElementById("newNameEdit").value;
+        console.log(newName);
+        
+        let idToEditName = this.parentNode.parentNode.id
+        editTodoName(idToEditName,newName);
+
+        this.parentNode.parentNode.childNodes.item(0).nodeValue = newName;
+        document.getElementById('editForm').remove();
     }
 
     infos(){
